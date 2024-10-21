@@ -1,0 +1,41 @@
+{
+  "name" : "QC_processed",
+  "jobMode" : "VISUAL",
+  "description" : "",
+  "role" : "arn:aws:iam::869935092174:role/ncif.ai.glue.admin",
+  "executionProperty" : {
+    "maxConcurrentRuns" : 1
+  },
+  "command" : {
+    "name" : "glueetl",
+    "scriptLocation" : "s3://aws-glue-assets-869935092174-us-east-1/scripts/QC_processed.py",
+    "pythonVersion" : "3"
+  },
+  "defaultArguments" : {
+    "--enable-metrics" : "true",
+    "--enable-spark-ui" : "true",
+    "--spark-event-logs-path" : "s3://aws-glue-assets-869935092174-us-east-1/sparkHistoryLogs/",
+    "--enable-job-insights" : "true",
+    "--enable-observability-metrics" : "true",
+    "--enable-glue-datacatalog" : "true",
+    "--enable-continuous-cloudwatch-log" : "true",
+    "--job-bookmark-option" : "job-bookmark-disable",
+    "--job-language" : "python",
+    "--TempDir" : "s3://aws-glue-assets-869935092174-us-east-1/temporary/"
+  },
+  "maxRetries" : 0,
+  "allocatedCapacity" : 10,
+  "timeout" : 2880,
+  "maxCapacity" : 10.0,
+  "glueVersion" : "4.0",
+  "numberOfWorkers" : 10,
+  "workerType" : "G.1X",
+  "executionClass" : "STANDARD",
+  "codeGenConfigurationNodes" : "{\"node-1729481593567\":{\"SelectFromCollection\":{\"Index\":0,\"Inputs\":[\"node-1729480505654\"],\"Name\":\"ruleOutcomes\"}},\"node-1729479993829\":{\"S3CsvSource\":{\"AdditionalOptions\":{\"EnableSamplePath\":false,\"SamplePath\":\"s3://ncif.ai.dev/DOE/02_processed/alt_fuel_data_2015.csv\"},\"Escaper\":\"\",\"Exclusions\":[],\"Name\":\"Processed_data\",\"OptimizePerformance\":false,\"OutputSchemas\":[{\"Columns\":[{\"Name\":\"fuel type code\",\"Type\":\"string\"},{\"Name\":\"station name\",\"Type\":\"string\"},{\"Name\":\"street address\",\"Type\":\"string\"},{\"Name\":\"intersection directions\",\"Type\":\"string\"},{\"Name\":\"city\",\"Type\":\"string\"},{\"Name\":\"state\",\"Type\":\"string\"},{\"Name\":\"zip\",\"Type\":\"string\"},{\"Name\":\"station phone\",\"Type\":\"string\"},{\"Name\":\"status code\",\"Type\":\"string\"},{\"Name\":\"expected date\",\"Type\":\"string\"},{\"Name\":\"groups with access code\",\"Type\":\"string\"},{\"Name\":\"access days time\",\"Type\":\"string\"},{\"Name\":\"cards accepted\",\"Type\":\"string\"},{\"Name\":\"bd blends\",\"Type\":\"string\"},{\"Name\":\"ng fill type code\",\"Type\":\"string\"},{\"Name\":\"ng psi\",\"Type\":\"string\"},{\"Name\":\"ev level1 evse num\",\"Type\":\"string\"},{\"Name\":\"ev level2 evse num\",\"Type\":\"string\"},{\"Name\":\"ev dc fast count\",\"Type\":\"string\"},{\"Name\":\"ev other info\",\"Type\":\"string\"},{\"Name\":\"ev network\",\"Type\":\"string\"},{\"Name\":\"ev network web\",\"Type\":\"string\"},{\"Name\":\"geocode status\",\"Type\":\"string\"},{\"Name\":\"latitude\",\"Type\":\"string\"},{\"Name\":\"longitude\",\"Type\":\"string\"},{\"Name\":\"date last confirmed\",\"Type\":\"string\"},{\"Name\":\"id\",\"Type\":\"string\"},{\"Name\":\"updated at\",\"Type\":\"string\"},{\"Name\":\"owner type code\",\"Type\":\"string\"},{\"Name\":\"federal agency id\",\"Type\":\"string\"},{\"Name\":\"federal agency name\",\"Type\":\"string\"},{\"Name\":\"hydrogen status link\",\"Type\":\"string\"},{\"Name\":\"lpg primary\",\"Type\":\"string\"},{\"Name\":\"e85 blender pump\",\"Type\":\"string\"},{\"Name\":\"ev connector types\",\"Type\":\"string\"},{\"Name\":\"country\",\"Type\":\"string\"},{\"Name\":\"groups with access code (french)\",\"Type\":\"string\"},{\"Name\":\"access code\",\"Type\":\"string\"},{\"Name\":\"access detail code\",\"Type\":\"string\"},{\"Name\":\"federal agency code\",\"Type\":\"string\"},{\"Name\":\"facility type\",\"Type\":\"string\"},{\"Name\":\"cng total compression capacity\",\"Type\":\"string\"},{\"Name\":\"cng fill type code\",\"Type\":\"string\"},{\"Name\":\"cng psi\",\"Type\":\"string\"},{\"Name\":\"year\",\"Type\":\"string\"}]}],\"Paths\":[\"s3://ncif.ai.dev/DOE/02_processed/alt_fuel_data_2015.csv\"],\"QuoteChar\":\"quote\",\"Recurse\":true,\"Separator\":\"comma\",\"WithHeader\":true}},\"node-1729481634819\":{\"S3GlueParquetTarget\":{\"AutoDataQuality\":{\"IsEnabled\":false},\"Compression\":\"snappy\",\"Inputs\":[\"node-1729481593567\"],\"Name\":\"Amazon S3\",\"PartitionKeys\":[],\"Path\":\"s3://ncif.ai.dev/DOE/02_processed/QC_results/\",\"SchemaChangePolicy\":{\"EnableUpdateCatalog\":false}}},\"node-1729480505654\":{\"EvaluateDataQualityMultiFrame\":{\"AdditionalDataSources\":{},\"AdditionalOptions\":{\"observations.scope\":\"ALL\",\"performanceTuning.caching\":\"CACHE_NOTHING\"},\"Inputs\":[\"node-1729479993829\"],\"Name\":\"Evaluate Data Quality\",\"PublishingOptions\":{\"CloudWatchMetricsEnabled\":true,\"ResultsPublishingEnabled\":true,\"ResultsS3Prefix\":\"\"},\"Ruleset\":\"Rules = [\\n    ColumnValues \\\"intersection directions\\\" != EMPTY with threshold > 0,\\n    ColumnValues \\\"cng fill type code\\\" != EMPTY with threshold > 0,\\n    ColumnValues \\\"bd blends\\\" != EMPTY with threshold > 0,\\n    ColumnValues \\\"ev level2 evse num\\\" != EMPTY with threshold > 0,\\n    ColumnValues \\\"cng fill type code\\\" != EMPTY with threshold > 0,\\n    ColumnValues \\\"cng psi\\\" != EMPTY with threshold > 0\\n]\",\"StopJobOnFailureOptions\":{}}}}",
+  "sourceControlDetails" : {
+    "provider" : "GITHUB",
+    "repository" : "aws_etl_jobs",
+    "branch" : "main",
+    "folder" : "qc"
+  }
+}
